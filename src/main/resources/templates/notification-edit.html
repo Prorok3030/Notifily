@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Notification Edit</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+</head>
+<body>
+<div class="container mt-5 mb-5">
+    <h1>Редактирование уведомления</h1>
+    <form action="/notificationEdit" th:object="${notification}" method="post">
+        <td>Идентификатор</td>
+        <td><input readonly type="text" th:field="*{id}" id="id" class="form-control"></td><br>
+        <td>Отправитель</td>
+        <td><input type="text" th:field="*{sender}" placeholder="Отправитель" id="sender" class="form-control"></td><br>
+        <td>Получатель</td>
+        <td><input type="text" th:field="*{recipient}" id="recipient" class="form-control"></td><br>
+        <td>Дата поступления груза</td>
+        <td><input type="date" th:field="*{date_entrance}" id="date_entrance" class="form-control"></td><br>
+        <td>Статус уведомления</td>
+        <select th:field="*{status}">
+            <option th:each="status : ${statuses}" th:value="${status.id}"
+                    th:text="${status.name}"></option>
+        </select><br>
+        <td>Пункт пропуска</td>
+        <select th:field="*{checkpoint}">
+            <option th:each="checkpoint : ${checkpoints}" th:value="${checkpoint.id}"
+                    th:text="${checkpoint.name}"></option>
+        </select><br>
+        <td>Продукция</td>
+        <input th:field="*{products}" id="products" type="hidden">
+        <td><input readonly type="text" th:value="${notification.getProductsString}" class="form-control"></td><br>
+        <td>Дополнительная информация</td>
+        <textarea th:field="*{extra}" placeholder="Введите дополнительную информацию" id="extra" class="form-control"></textarea><br>
+        <button type="submit" class="btn btn-success">Подтвердить</button>
+        <a class="btn btn-primary" th:href="@{/products/{notifyId}(notifyId=*{id})}" role="button">Редактировать продукцию</a>
+        <a class="btn btn-danger" th:href="@{/notificationDelete/{id}(id=*{id})}" role="button">Удалить уведомление</a>
+    </form>
+    <a class="btn btn-primary" th:href="${previousUrl}" role="button">Назад</a>
+</div>
+
+</body>
+</html>

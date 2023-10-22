@@ -6,16 +6,16 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class Unit {
+public class Status {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
 
-    public Unit() {
+    public Status() {
     }
 
-    public Unit(String name) {
+    public Status(String name) {
         this.name = name;
     }
 
