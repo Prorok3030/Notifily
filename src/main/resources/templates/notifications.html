@@ -20,7 +20,7 @@
             <th scope="col">Название продукции</th>
         </tr>
         </thead>
-        <tbody th:each="el : ${notifications}">
+        <tbody th:each="el : ${notificationPage.content}">
         <tr>
             <td th:text="${el.id}"/>
             <td th:text="${el.sender}"/>
@@ -34,6 +34,24 @@
         </tbody>
     </table>
 </div>
-
+<div th:if="${notificationPage.totalPages > 0}">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item" th:classappend="${currentPage < 2}? 'disabled' : ''">
+                <a class="page-link" th:href="@{/(size=${notificationPage.size}, page=${currentPage - 1})}">Предыдущая</a>
+            </li>
+            <li class="page-item" th:each="pageNumber : ${pageNumbers}"
+                th:classappend="${pageNumber}==${currentPage}? 'active' : ''">
+                <a class="page-link"
+                   th:href="@{/(size=${notificationPage.size}, page=${pageNumber})}"
+                   th:text=${pageNumber}>
+                </a>
+            </li>
+            <li class="page-item" th:classappend="${currentPage == notificationPage.totalPages}? 'disabled' : ''">
+                <a class="page-link" th:href="@{/(size=${notificationPage.size}, page=${currentPage + 1})}">Следующая</a>
+            </li>
+        </ul>
+    </nav>
+</div>
 </body>
 </html>

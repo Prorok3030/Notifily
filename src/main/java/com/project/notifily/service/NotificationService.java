@@ -3,10 +3,14 @@ package com.project.notifily.service;
 import com.project.notifily.model.Notification;
 import com.project.notifily.repository.NotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -25,13 +29,12 @@ public class NotificationService {
     public Notification findById(Long id){
         return notificationRepository.findById(id).orElse(null);
     }
-    public boolean existsById(Long id){ //TODO Возможно удалить
-        return notificationRepository.existsById(id);
+
+    public void save(Notification notification) {
+        notificationRepository.save(notification);
     }
-    public Notification save(Notification notification){
-        return notificationRepository.save(notification);
-    }
-    public void delete(Long id){
+
+    public void delete(Long id) {
         notificationRepository.deleteById(id);
     }
 
@@ -49,14 +52,26 @@ public class NotificationService {
         return notification;
     }
 
-    public Notification newEmpty(Notification notification){ //TODO Возможно удалить
-        if (notification == null || !(existsById(notification.getId()))){
-            Notification notification1 = new Notification();
-            save(notification1);
-            return notification1;
-        }
-        else {
-            return notification;
-        }
+    public Page<Notification> findPaginated(Pageable pageable){
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startItem = currentPage * pageSize;
+//        List<Notification> list;
+//
+//        if(notifications.size() < startItem){
+//            list = Collections.emptyList();
+//        }
+//        else{
+//            int toIndex = Math.min(startItem + pageSize, notifications.size());
+//            list = notifications.subList(startItem, toIndex);
+//        }
+
+        Pageable pageable1 = PageRequest.of(currentPage,pageSize);
+//        List<Notification> notifications1 = findAll();
+
+        Page<Notification> notificationPage
+                = notificationRepository.findAll(pageable1);
+
+        return notificationPage;
     }
 }
