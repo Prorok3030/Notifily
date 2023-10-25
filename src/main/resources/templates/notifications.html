@@ -9,6 +9,23 @@
 <div>
     <h1>Уведомления</h1>
     <a class="btn btn-primary" href="/notificationAdd" role="button">Добавить уведомление</a>
+    <div>
+        <form th:action="@{/}" th:object="${notification}" method="get">
+            <label>Статус</label>
+            <select th:field="*{status}">
+                <option th:value=null>Все</option>
+                <option th:each="status : ${statuses}" th:value="${status.id}"
+                        th:text="${status.name}" th:selected="Все"></option>
+            </select>
+            <label>Продукция</label>
+            <input type="text" th:value="${product}" name="product">
+            <label>Дата</label>
+            <input type="date" th:value="${dateStart}" name="dateStart">
+            <input type="date" th:value="${dateEnd}"name="dateEnd">
+            <button type="submit" class="btn btn-success">Поиск</button>
+            <a class="btn btn-primary" href="/" role="button">Сбросить фильтры</a></td>
+        </form>
+    </div>
     <table class="table">
         <thead class="thead-light">
         <tr>
@@ -38,17 +55,17 @@
     <nav aria-label="Page navigation example">
         <ul class="pagination">
             <li class="page-item" th:classappend="${currentPage < 2}? 'disabled' : ''">
-                <a class="page-link" th:href="@{/(size=${notificationPage.size}, page=${currentPage - 1})}">Предыдущая</a>
+                <a class="page-link" th:href="@{/(size=${notificationPage.size}, page=${currentPage - 1}, status=${statusCur}, product=${product}, dateStart=${dateStart}, dateEnd=${dateEnd})}">Предыдущая</a>
             </li>
             <li class="page-item" th:each="pageNumber : ${pageNumbers}"
                 th:classappend="${pageNumber}==${currentPage}? 'active' : ''">
                 <a class="page-link"
-                   th:href="@{/(size=${notificationPage.size}, page=${pageNumber})}"
+                   th:href="@{/(size=${notificationPage.size}, page=${pageNumber}, status=${statusCur}, product=${product}, dateStart=${dateStart}, dateEnd=${dateEnd})}"
                    th:text=${pageNumber}>
                 </a>
             </li>
             <li class="page-item" th:classappend="${currentPage == notificationPage.totalPages}? 'disabled' : ''">
-                <a class="page-link" th:href="@{/(size=${notificationPage.size}, page=${currentPage + 1})}">Следующая</a>
+                <a class="page-link" th:href="@{/(size=${notificationPage.size}, page=${currentPage + 1}, status=${statusCur}, product=${product}, dateStart=${dateStart}, dateEnd=${dateEnd})}">Следующая</a>
             </li>
         </ul>
     </nav>

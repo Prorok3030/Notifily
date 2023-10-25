@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class NotificationService {
@@ -52,9 +53,10 @@ public class NotificationService {
         return notification;
     }
 
-    public Page<Notification> findPaginated(Pageable pageable){
-        int pageSize = pageable.getPageSize();
-        int currentPage = pageable.getPageNumber();
+    public Page<Notification> findPaginated(Long status, String product, String dateStart, String dateEnd, Optional<Integer> page, Optional<Integer> size){
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(10);
+        Pageable pageable = PageRequest.of(currentPage -1, pageSize);
         int startItem = currentPage * pageSize;
 //        List<Notification> list;
 //
@@ -70,7 +72,7 @@ public class NotificationService {
 //        List<Notification> notifications1 = findAll();
 
         Page<Notification> notificationPage
-                = notificationRepository.findAll(pageable1);
+                = notificationRepository.findAllFiltered(status,product,dateStart,dateEnd, pageable);
 
         return notificationPage;
     }

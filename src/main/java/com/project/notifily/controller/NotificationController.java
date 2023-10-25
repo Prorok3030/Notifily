@@ -32,11 +32,13 @@ public class NotificationController {
     }
 
     @GetMapping("/")
-    public String findAll(Model model,@RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size,
-                            @RequestParam("status") Optional<String> status, @RequestParam("product") Optional<String> product){
+    public String findAll(@RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size,
+                          @RequestParam(required = false) Long status, @RequestParam(required = false) String product,
+                          @RequestParam(required = false) String dateStart, @RequestParam(required = false) String dateEnd,
+                          Model model, Notification notification){
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(10);
-        Page<Notification> notificationPage = notificationService.findPaginated(PageRequest.of(currentPage -1, pageSize));
+        Page<Notification> notificationPage = notificationService.findPaginated(status, product, dateStart, dateEnd, page, size);
         model.addAttribute("notificationPage", notificationPage);
         int totalPages = notificationPage.getTotalPages();
         if (totalPages > 0) {
@@ -47,6 +49,11 @@ public class NotificationController {
             model.addAttribute("currentPage", currentPage);
             model.addAttribute("totalPages", totalPages);
         }
+        model.addAttribute("product",product);
+        model.addAttribute("dateStart",dateStart);
+        model.addAttribute("dateEnd",dateEnd);
+        model.addAttribute("statusCur", status);
+        model.addAttribute("statuses", statusService.findAll());
         return "notifications";
     }
 
