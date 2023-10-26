@@ -1,6 +1,7 @@
 package com.project.notifily.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -12,10 +13,13 @@ public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotEmpty(message = "Поле не должно быть пустым")
     private String sender;
+    @NotEmpty(message = "Поле не должно быть пустым")
     private String recipient;
+    @NotEmpty(message = "Поле не должно быть пустым")
     private String date_entrance;
-    private String data_create;
+    private String date_create;
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "status_id", referencedColumnName = "id")
@@ -31,11 +35,11 @@ public class Notification {
     public Notification() {
     }
 
-    public Notification(String sender, String recipient, String date_entrance, String data_create, Status status, Checkpoint checkpoint, List<Product> products, String extra) {
+    public Notification(String sender, String recipient, String date_entrance, String date_create, Status status, Checkpoint checkpoint, List<Product> products, String extra) {
         this.sender = sender;
         this.recipient = recipient;
         this.date_entrance = date_entrance;
-        this.data_create = data_create;
+        this.date_create = date_create;
         this.status = status;
         this.checkpoint = checkpoint;
         this.products = products;
@@ -83,12 +87,12 @@ public class Notification {
         this.date_entrance = date_entrance;
     }
 
-    public String getData_create() {
-        return data_create;
+    public String getDate_create() {
+        return date_create;
     }
 
-    public void setData_create(String data_create) {
-        this.data_create = data_create;
+    public void setDate_create(String date_create) {
+        this.date_create = date_create;
     }
 
     public Status getStatus() {

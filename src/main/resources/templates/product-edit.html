@@ -4,24 +4,33 @@
     <meta charset="UTF-8">
     <title>Product edit</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="/css/notification-add.css">
 </head>
 <body>
 <div class="container mt-5 mb-5">
     <h3>Редактирование информации о продукции</h3>
-    <form action="/productEdit" th:object="${product}" method="post">
-        <td>Название</td>
-        <td><input type="text" th:field="*{name}" placeholder="Отправитель" id="name" class="form-control"></td><br>
-        <td>Объём</td>
-        <td><input type="text" th:field="*{amount}" id="amount" class="form-control"></td><br>
-        <td>Единица измерения</td>
-        <select th:field="*{unit}">
+    <form th:object="${product}" id="form" method="post">
+        <label>Название</label>
+        <div class="input-box">
+            <input type="text" th:field="*{name}" placeholder="Отправитель" id="name" class="form-control js-input">
+            <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Error</div>
+        </div>
+        <label>Объём</label>
+        <div class="input-box">
+            <input type="text" th:field="*{amount}" id="amount" class="form-control js-number">
+            <div style="color:red" th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}">Error</div>
+        </div>
+        <label>Единица измерения</label>
+        <select th:field="*{unit}" class="form-select">
             <option th:each="units : ${units}" th:value="${units.id}"
                     th:text="${units.name}"></option>
         </select><br>
+        <input th:field="*{id}" id="id" type="hidden">
+        <input th:field="*{notification}" id="notification" type="hidden">
         <button type="submit" class="btn btn-success">Подтвердить</button>
-        <a class="btn btn-primary" href="/products" role="button">Назад</a>
+        <a class="btn btn-primary" th:href="@{/products/{notifyId}(notifyId=*{notification.id})}" role="button">Отмена</a>
     </form>
 </div>
+<script defer src="/js/product-add.js"></script>
 </body>
 </html>

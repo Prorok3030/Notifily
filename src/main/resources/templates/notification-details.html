@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Notification Edit</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/notification-edit.css">
+</head>
+<body>
+<div class="container mt-5 mb-5">
+    <h1>Просмотр уведомления</h1>
+    <div>
+        <label>Идентификатор</label>
+        <input readonly th:value="${notification.id}" class="form-control">
+        <label>Отправитель</label>
+        <input readonly th:value="${notification.sender}" class="form-control">
+        <label>Получатель</label>
+        <input readonly th:value="${notification.recipient}" class="form-control">
+        <label>Дата поступления груза</label>
+        <input readonly th:value="${notification.date_entrance}" class="form-control">
+        <label>Дата создания уведомления</label>
+        <input readonly th:value="${notification.date_create}" class="form-control">
+        <label>Статус уведомления</label>
+        <input readonly th:value="${notification.status.name}" class="form-control">
+        <label>Пункт пропуска</label>
+        <input readonly th:value="${notification.checkpoint.name}" class="form-control">
+        <label>Продукция</label>
+        <input readonly th:value="${notification.getProductsString}" class="form-control">
+        <label>Дополнительная информация</label>
+        <input readonly th:value="${notification.extra}" class="form-control">
+    </div>
+    <a class="btn btn-primary" href="/" role="button">Назад</a>
+</div>
+<script defer src="/js/notification-add.js"></script>
+</body>
+</html>

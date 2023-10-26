@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <title>Notifications</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/list.css">
 </head>
 <body>
 <div>
     <h1>Уведомления</h1>
     <a class="btn btn-primary" href="/notificationAdd" role="button">Добавить уведомление</a>
-    <div>
+    <div class="list">
         <form th:action="@{/}" th:object="${notification}" method="get">
             <label>Статус</label>
             <select th:field="*{status}">
@@ -45,8 +46,9 @@
             <td th:text="${el.date_entrance}"/>
             <td th:text="${el.status.name}"/>
             <td th:text="${el.getProductsString}"/>
-            <td><a class="btn btn-primary" th:href="@{notificationInfo/{id}(id=${el.id})}" role="button">Открыть</a></td>
-            <td><a class="btn btn-danger" th:href="@{notificationEdit/{id}(id=${el.id})}" role="button">Редактировать</a></td>
+            <td><a class="btn btn-primary" th:href="@{notificationDetails/{id}(id=${el.id})}" role="button">Открыть</a></td>
+            <td th:if="${el.status.id == 1}"><a class="btn btn-danger" th:href="@{notificationEdit/{id}(id=${el.id})}" role="button">Редактировать</a></td>
+            <td th:if="${el.status.id != 1}"><a class="btn btn-danger disabled" th:href="@{notificationEdit/{id}(id=${el.id})}" role="button">Редактировать</a></td>
         </tr>
         </tbody>
     </table>

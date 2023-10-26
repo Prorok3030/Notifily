@@ -1,6 +1,7 @@
 package com.project.notifily.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -11,7 +12,9 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotEmpty(message = "Поле не должно быть пустым")
     private String name;
+    @Min(value = 0, message = "Поле не должно содержать отрицательных чисел")
     private int amount;
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)

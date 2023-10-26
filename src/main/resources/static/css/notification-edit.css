@@ -1,0 +1,20 @@
+html, body{
+    background:linear-gradient(white, lightblue);
+}
+
+.input-box{
+    margin-bottom: 20px;
+}
+
+select{
+    margin-bottom: 20px;
+}
+
+.error .js-input{
+    border-color: red;
+}
+
+.error-label{
+    display: block;
+    color: red;
+}

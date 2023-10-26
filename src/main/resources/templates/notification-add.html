@@ -4,35 +4,44 @@
     <meta charset="UTF-8">
     <title>Notification Add</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="css/notification-add.css">
 </head>
 <body>
 <div class="container mt-5 mb-5">
     <h1>Добавление уведомления</h1>
-    <form th:object="${notification}" method="post">
-        <td>Отправитель</td>
-        <td><input type="text" th:field="*{sender}" placeholder="Отправитель" id="sender" class="form-control"></td><br>
-        <td>Получатель</td>
-        <td><input type="text" th:field="*{recipient}" id="recipient" class="form-control"></td><br>
-        <td>Дата поступления груза</td>
-        <td><input type="date" th:field="*{date_entrance}" id="date_entrance" class="form-control"></td><br>
-        <td>Статус уведомления</td>
-        <select th:field="*{status}">
+    <form th:object="${notification}" id="form" method="post" >
+        <label>Отправитель</label>
+        <div class="input-box">
+            <input type="text" th:field="*{sender}" placeholder="Отправитель" id="sender" class="form-control js-input">
+            <div style="color:red" th:if="${#fields.hasErrors('sender')}" th:errors="*{sender}">Error</div>
+        </div>
+        <label>Получатель</label>
+        <div class="input-box">
+            <input type="text" th:field="*{recipient}" id="recipient" class="form-control js-input">
+            <div style="color:red" th:if="${#fields.hasErrors('recipient')}" th:errors="*{recipient}">Error</div>
+        </div>
+        <label>Дата поступления груза</label>
+        <div class="input-box">
+            <input type="date" th:field="*{date_entrance}" id="date_entrance" class="form-control js-input">
+            <div style="color:red" th:if="${#fields.hasErrors('date_entrance')}" th:errors="*{date_entrance}">Error</div>
+        </div>
+        <label>Статус уведомления</label>
+        <select th:field="*{status}" class="form-select">
             <option th:each="status : ${statuses}" th:value="${status.id}"
                     th:text="${status.name}"></option>
-        </select><br>
-        <td>Пункт пропуска</td>
-        <select th:field="*{checkpoint}">
+        </select>
+        <label>Пункт пропуска</label>
+        <select th:field="*{checkpoint}" class="form-select">
             <option th:each="checkpoint : ${checkpoints}" th:value="${checkpoint.id}"
                     th:text="${checkpoint.name}"></option>
-        </select><br>
-        <td>Дополнительная информация</td>
+        </select>
+        <label>Дополнительная информация</label>
         <textarea th:field="*{extra}" placeholder="Введите дополнительную информацию" id="extra" class="form-control"></textarea><br>
-        <input th:field="*{products}" id="intelligence" type="hidden">
+<!--        <input th:field="*{products}" id="products" type="hidden">-->
         <button type="submit" class="btn btn-success">Подтвердить</button>
         <a class="btn btn-primary" href="/" role="button">Назад</a>
     </form>
 </div>
-
+<script defer src="js/notification-add.js"></script>
 </body>
 </html>

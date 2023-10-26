@@ -1,15 +1,15 @@
 package com.project.notifily.controller;
 
 import com.project.notifily.model.Notification;
-import com.project.notifily.model.Product;
 import com.project.notifily.service.CheckpointService;
 import com.project.notifily.service.NotificationService;
 import com.project.notifily.service.StatusService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -65,29 +65,37 @@ public class NotificationController {
     }
 
     @PostMapping("/notificationAdd")
-    public String NotificationAddPost(@ModelAttribute("notification") Notification notification){
+    public String NotificationAddPost(@ModelAttribute("notification") @Valid Notification notification, BindingResult bindingResult,
+                                      Model model){
 //        notificationService.formatDate(notification);
-        notification.setData_create(notificationService.getDate());
+        if(bindingResult.hasErrors()){
+            model.addAttribute("statuses", statusService.findAll());
+            model.addAttribute("checkpoints", checkpointService.findAll());
+            return "notification-add";
+        }
+        notification.setDate_create(notificationService.getDate());
         notificationService.save(notification);
         return "redirect:/products/" + notification.getId();
     }
 
     @GetMapping("/notificationEdit/{id}")
-    public String NotificationEdit(@PathVariable("id") Long id, Model model,
-                                   @RequestHeader(value= "referer", required = false) final String referer){
+    public String NotificationEdit(@PathVariable("id") Long id, Model model){
         Notification notification = notificationService.findById(id);
         model.addAttribute("notification", notification);
         model.addAttribute("statuses", statusService.findAll());
         model.addAttribute("checkpoints", checkpointService.findAll());
-        if (referer != null){
-            model.addAttribute("previousUrl", referer);
-        }
         return "notification-edit";
     }
 
-    @PostMapping("/notificationEdit")
-    public String NotificationEditPost(Notification notification){
+    @PostMapping("/notificationEdit/{id}")
+    public String NotificationEditPost(@ModelAttribute("notification") @Valid Notification notification,
+                                       BindingResult bindingResult, Model model){
 //        notificationService.formatDate(notification);
+        if(bindingResult.hasErrors()){
+            model.addAttribute("statuses", statusService.findAll());
+            model.addAttribute("checkpoints", checkpointService.findAll());
+            return "notification-edit";
+        }
         notificationService.save(notification);
         return "redirect:/";
     }
@@ -96,5 +104,12 @@ public class NotificationController {
     public String NotificationDelete(@PathVariable("id") Long id){
         notificationService.delete(id);
         return "redirect:/";
+    }
+
+    @GetMapping("/notificationDetails/{id}")
+    public String NotificationDetails(@PathVariable("id") Long id, Model model){
+        Notification notification = notificationService.findById(id);
+        model.addAttribute("notification", notification);
+        return "notification-details";
     }
 }

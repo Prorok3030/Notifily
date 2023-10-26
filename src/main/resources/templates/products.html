@@ -9,10 +9,10 @@
 <body>
 <div>
   <h1>Добавленная продукция</h1>
-  <a class="btn btn-primary" th:href="@{/productAdd/{notifyId}(notifyId=${notificationId})}" role="button">Добавить продукцию</a>
+  <a class="btn btn-primary" th:href="@{/productAdd/{notifyId}(notifyId=${notifyId})}" role="button">Добавить продукцию</a>
   <a class="btn btn-primary" href="/" role="button">К списку уведомлений</a>
-  <a class="btn btn-primary" th:href="@{/notificationEdit/{id}(id=${notificationId})}" role="button">Вернуться к редактированию связанного уведомления</a>
-  <a class="btn btn-danger" th:href="@{/notificationDelete/{id}(id=${notificationId})}" role="button">Удалить связанное уведомление</a>
+  <a class="btn btn-primary" th:href="@{/notificationEdit/{id}(id=${notifyId})}" role="button">Вернуться к редактированию связанного уведомления</a>
+  <a class="btn btn-danger" th:href="@{/notificationDelete/{id}(id=${notifyId})}" role="button">Удалить связанное уведомление</a>
   <table class="table">
     <thead class="thead-light">
     <tr>
