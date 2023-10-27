@@ -49,8 +49,6 @@ public class NotificationRepositoryImpl implements NotificationRepositoryCustom 
         Long count = Long.valueOf(allResult.size());
         Page<Notification> result1 = new PageImpl<>(result, pageable, count);
         return result1;
-//        TypedQuery<Notification> query = em.createQuery(criteriaQuery);
-//        return query.getResultList();
     }
 
 }

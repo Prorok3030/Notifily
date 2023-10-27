@@ -39,7 +39,7 @@ public class ProductService {
 
     public Page<Product> findPaginated(Long notifyId, Integer page, Integer size){
 
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page -1, size);
 
         Page<Product> notificationPage
                 = productRepository.findByNotificationId(notifyId, pageable);

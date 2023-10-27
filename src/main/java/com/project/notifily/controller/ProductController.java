@@ -39,7 +39,7 @@ public class ProductController {
                                      @RequestParam("size") Optional<Integer> size, Model model){
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(10);
-        Page<Product> productsPage = productService.findPaginated(notifyId, currentPage-1, pageSize);
+        Page<Product> productsPage = productService.findPaginated(notifyId, currentPage, pageSize);
         int totalPages = productsPage.getTotalPages();
         if (totalPages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)

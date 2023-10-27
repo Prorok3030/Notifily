@@ -35,8 +35,8 @@ function validation(form){
 
     form.querySelectorAll('.js-number').forEach(input => {
         removeError(input)
-        if(!/^\d+$/.test(input.value)){
-            createError(input, 'Необходимо ввести положительное число')
+        if(!/^\d+$/.test(input.value) || input.value == "0"){
+            createError(input, 'Необходимо ввести положительное число больше нуля')
             result=false;
         }
         if(input.value==""){

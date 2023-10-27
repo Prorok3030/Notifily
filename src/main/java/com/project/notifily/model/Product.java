@@ -14,7 +14,7 @@ public class Product {
     private Long id;
     @NotEmpty(message = "Поле не должно быть пустым")
     private String name;
-    @Min(value = 0, message = "Поле не должно содержать отрицательных чисел")
+    @Min(value = 1, message = "Поле должно содержать число больше нуля")
     private int amount;
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)

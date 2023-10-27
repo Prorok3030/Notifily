@@ -45,24 +45,7 @@ public class NotificationService {
         return date.format(formatter);
     }
 
-    public Notification formatDate(Notification notification){
-        String dateOld = notification.getDate_entrance();
-        LocalDate date1 = LocalDate.parse(dateOld, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        String dateNew = date1.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-        notification.setDate_entrance(dateNew);
-        return notification;
-    }
-
-    public Notification formatDateBack(Notification notification){
-        String dateOld = notification.getDate_entrance();
-        LocalDate date1 = LocalDate.parse(dateOld, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-        String dateNew = date1.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        notification.setDate_entrance(dateNew);
-        return notification;
-    }
-
     public Page<Notification> findPaginated(Long status, String product, String dateStart, String dateEnd, Integer page, Integer size){
-
         Pageable pageable = PageRequest.of(page -1, size);
         Page<Notification> notificationPage
                 = notificationRepository.findAllFiltered(status,product,dateStart,dateEnd, pageable);
