@@ -41,9 +41,10 @@
         </select>
         <label>Продукция</label>
         <input th:field="*{products}" id="products" type="hidden">
-        <input readonly type="text" th:value="${notification.getProductsString}" class="form-control"><br>
+        <span readonly   th:text="${notification.getProductsString}" class="form-control"></span><br>
         <label>Дополнительная информация</label>
         <textarea th:field="*{extra}" placeholder="Введите дополнительную информацию" id="extra" class="form-control"></textarea><br>
+        <input th:field="*{date_create}" id="date_create" type="hidden">
         <button type="submit" class="btn btn-success">Подтвердить</button>
         <a class="btn btn-primary" href="/" role="button">Отмена</a>
         <a class="btn btn-primary" th:href="@{/products/{notifyId}(notifyId=*{id})}" role="button">Редактировать продукцию</a>

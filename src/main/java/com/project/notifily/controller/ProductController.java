@@ -8,6 +8,7 @@ import com.project.notifily.service.UnitService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.http.HttpHeaders;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 public class ProductController {
@@ -31,10 +35,22 @@ public class ProductController {
     }
 
     @GetMapping("/products/{notifyId}")
-    public String findByNotification(@PathVariable("notifyId") Long notifyId, Model model){
-        List<Product> products = productService.findByNotificationId(notifyId );
+    public String findByNotification(@PathVariable("notifyId") Long notifyId, @RequestParam("page") Optional<Integer> page,
+                                     @RequestParam("size") Optional<Integer> size, Model model){
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(10);
+        Page<Product> productsPage = productService.findPaginated(notifyId, currentPage-1, pageSize);
+        int totalPages = productsPage.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+            model.addAttribute("currentPage", currentPage);
+            model.addAttribute("totalPages", totalPages);
+        }
+        model.addAttribute("productsPage", productsPage);
         model.addAttribute("notifyId", notifyId);
-        model.addAttribute("products",products);
         return "products";
     }
 
@@ -77,8 +93,9 @@ public class ProductController {
 
     @GetMapping("/productDelete/{id}")
     public String productDelete(@PathVariable("id") Long id){
+        Product product = productService.findById(id);
         productService.delete(id);
-        return "redirect:/products";
+        return "redirect:/products/" + product.getNotification().getId();
     }
 
 }

@@ -53,24 +53,17 @@ public class NotificationService {
         return notification;
     }
 
-    public Page<Notification> findPaginated(Long status, String product, String dateStart, String dateEnd, Optional<Integer> page, Optional<Integer> size){
-        int currentPage = page.orElse(1);
-        int pageSize = size.orElse(10);
-        Pageable pageable = PageRequest.of(currentPage -1, pageSize);
-        int startItem = currentPage * pageSize;
-//        List<Notification> list;
-//
-//        if(notifications.size() < startItem){
-//            list = Collections.emptyList();
-//        }
-//        else{
-//            int toIndex = Math.min(startItem + pageSize, notifications.size());
-//            list = notifications.subList(startItem, toIndex);
-//        }
+    public Notification formatDateBack(Notification notification){
+        String dateOld = notification.getDate_entrance();
+        LocalDate date1 = LocalDate.parse(dateOld, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        String dateNew = date1.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        notification.setDate_entrance(dateNew);
+        return notification;
+    }
 
-        Pageable pageable1 = PageRequest.of(currentPage,pageSize);
-//        List<Notification> notifications1 = findAll();
+    public Page<Notification> findPaginated(Long status, String product, String dateStart, String dateEnd, Integer page, Integer size){
 
+        Pageable pageable = PageRequest.of(page -1, size);
         Page<Notification> notificationPage
                 = notificationRepository.findAllFiltered(status,product,dateStart,dateEnd, pageable);
 

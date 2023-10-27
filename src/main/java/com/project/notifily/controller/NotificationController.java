@@ -38,8 +38,7 @@ public class NotificationController {
                           Model model, Notification notification){
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(10);
-        Page<Notification> notificationPage = notificationService.findPaginated(status, product, dateStart, dateEnd, page, size);
-        model.addAttribute("notificationPage", notificationPage);
+        Page<Notification> notificationPage = notificationService.findPaginated(status, product, dateStart, dateEnd, currentPage, pageSize-1);
         int totalPages = notificationPage.getTotalPages();
         if (totalPages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
@@ -49,11 +48,12 @@ public class NotificationController {
             model.addAttribute("currentPage", currentPage);
             model.addAttribute("totalPages", totalPages);
         }
+        model.addAttribute("notificationPage", notificationPage);
+        model.addAttribute("statuses", statusService.findAll());
         model.addAttribute("product",product);
         model.addAttribute("dateStart",dateStart);
         model.addAttribute("dateEnd",dateEnd);
         model.addAttribute("statusCur", status);
-        model.addAttribute("statuses", statusService.findAll());
         return "notifications";
     }
 
@@ -67,7 +67,7 @@ public class NotificationController {
     @PostMapping("/notificationAdd")
     public String NotificationAddPost(@ModelAttribute("notification") @Valid Notification notification, BindingResult bindingResult,
                                       Model model){
-//        notificationService.formatDate(notification);
+        notificationService.formatDate(notification);
         if(bindingResult.hasErrors()){
             model.addAttribute("statuses", statusService.findAll());
             model.addAttribute("checkpoints", checkpointService.findAll());
@@ -81,6 +81,7 @@ public class NotificationController {
     @GetMapping("/notificationEdit/{id}")
     public String NotificationEdit(@PathVariable("id") Long id, Model model){
         Notification notification = notificationService.findById(id);
+        notificationService.formatDateBack(notification);
         model.addAttribute("notification", notification);
         model.addAttribute("statuses", statusService.findAll());
         model.addAttribute("checkpoints", checkpointService.findAll());
@@ -90,7 +91,7 @@ public class NotificationController {
     @PostMapping("/notificationEdit/{id}")
     public String NotificationEditPost(@ModelAttribute("notification") @Valid Notification notification,
                                        BindingResult bindingResult, Model model){
-//        notificationService.formatDate(notification);
+        notificationService.formatDate(notification);
         if(bindingResult.hasErrors()){
             model.addAttribute("statuses", statusService.findAll());
             model.addAttribute("checkpoints", checkpointService.findAll());
